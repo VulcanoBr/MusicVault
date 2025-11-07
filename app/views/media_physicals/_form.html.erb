@@ -1,0 +1,343 @@
+<%= simple_form_for @media_physical, html: { class: 'needs-validation', novalidate: true,
+                                            data: { controller: 'media-type' } } do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Informações Básicas</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <%= f.input :media_type_id,
+              collection: @media_types,
+              label_method: :name,
+              value_method: :id,
+              label: 'Tipo de Mídia',
+              input_html: { 
+                class: 'form-select', 
+                data: { action: 'change->media-type#toggleDetails',  'media-type-target': 'mediaTypeSelect' }
+              },
+              include_blank: 'Selecione...' %>
+        </div>
+        
+        <div class="col-md-9 mb-3">
+          <%= f.input :album_title, 
+              label: 'Título do Álbum',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :artist_band, 
+              label: 'Artista/Banda',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+          <%= f.input :release_year, 
+              label: 'Ano de Lançamento',
+              input_html: { class: 'form-control', min: 1900, max: Date.current.year + 1 } %>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+          <%= f.input :genre_id,
+              collection: @genres,
+              label_method: :name,
+              value_method: :id,
+              label: 'Gênero',
+              input_html: { class: 'form-select' },
+              include_blank: 'Selecione...' %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :record_label_id,
+              collection: @labels,
+              label_method: :name,
+              value_method: :id,
+              label: 'Gravadora',
+              input_html: { class: 'form-select' },
+              include_blank: 'Selecione...' %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :imprint_id,
+              collection: @imprints,
+              label_method: :name,
+              value_method: :id,
+              label: 'Selo',
+              input_html: { class: 'form-select' },
+              include_blank: 'Nenhum' %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :country_id,
+              collection: @countries,
+              label_method: :name,
+              value_method: :id,
+              label: 'País',
+              input_html: { class: 'form-select' },
+              include_blank: 'Selecione...' %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :release_type_id,
+              collection: @release_types,
+              label_method: :name,
+              value_method: :id,
+              label: 'Tipo de Lançamento',
+              input_html: { class: 'form-select' },
+              include_blank: 'Selecione...' %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :barcode, 
+              label: 'Código de Barras',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :label_code, maxlength: 12, 
+              label: 'Número de Catálogo da Gravadora',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :front_cover, 
+              as: :file,
+              label: 'Capa (Frente)',
+              hint: 'PNG, JPG ou GIF (máx. 5MB)',
+              input_html: { 
+                accept: 'image/png,image/jpg,image/jpeg,image/gif',
+                class: 'form-control'
+              } %>
+          
+          <% if f.object.front_cover.attached? %>
+            <div class="mt-2">
+              <%= image_tag f.object.front_cover.variant(resize_to_limit: [200, 200]), 
+                            class: 'img-thumbnail' %>
+              <div class="form-check mt-1">
+                <%= f.input :remove_front_cover, 
+                    as: :boolean, 
+                    label: 'Remover imagem atual',
+                    wrapper: false,
+                    label_html: { class: 'form-check-label' },
+                    input_html: { class: 'form-check-input' } %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :back_cover, 
+              as: :file,
+              label: 'Capa (Verso)',
+              hint: 'PNG, JPG ou GIF (máx. 5MB)',
+              input_html: { 
+                accept: 'image/png,image/jpg,image/jpeg,image/gif',
+                class: 'form-control'
+              } %>
+          
+          <% if f.object.back_cover.attached? %>
+            <div class="mt-2">
+              <%= image_tag f.object.back_cover.variant(resize_to_limit: [200, 200]), 
+                            class: 'img-thumbnail' %>
+              <div class="form-check mt-1">
+                <%= f.input :remove_back_cover, 
+                    as: :boolean, 
+                    label: 'Remover imagem atual',
+                    wrapper: false,
+                    label_html: { class: 'form-check-label' },
+                    input_html: { class: 'form-check-input' } %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="col-12">
+          <%= f.input :general_notes, 
+              label: 'Observações Gerais',
+              input_html: { class: 'form-control', rows: 3 } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Detalhes de Vinil -->
+  <div class="card mb-3" data-media-type-target="vinylDetails" style="display: none;">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="bi bi-vinyl"></i> Detalhes do Vinil</h5>
+    </div>
+    <div class="card-body">
+      <%= f.simple_fields_for :vinyl_detail do |vinyl| %>
+        <div class="row">
+          <div class="col-md-2">
+            <%= vinyl.input :disc_quantity, 
+                label: 'Quantidade de Discos',
+                input_html: { class: 'form-control', min: 1, value: 1 } %>
+          </div>
+          <div class="col-md-2">
+            <%= vinyl.input :size, 
+                collection: VinylDetail::SIZES,
+                label: 'Tamanho',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+          <div class="col-md-2">
+            <%= vinyl.input :speed, 
+                collection: VinylDetail::SPEEDS,
+                label: 'Velocidade',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+          <div class="col-md-3">
+            <%= vinyl.input :color, 
+                collection: VinylDetail::COLORS,
+                label: 'Cor',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+          <div class="col-md-3">
+            <%= vinyl.input :edition, 
+                collection: VinylDetail::EDITIONS,
+                label: 'Edição',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+          <div class="col-md-6">
+            <%= vinyl.input :matrix_number, 
+                label: 'Número de Prensagem/Matriz',
+                input_html: { class: 'form-control' } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Detalhes de CD -->
+  <div class="card mb-3" data-media-type-target="cdDetails" style="display: none;">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="bi bi-disc"></i> Detalhes do CD</h5>
+    </div>
+    <div class="card-body">
+      <%= f.simple_fields_for :cd_detail do |cd| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= cd.input :disc_quantity, 
+                label: 'Quantidade de Discos',
+                input_html: { class: 'form-control', min: 1, value: 1 } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Detalhes de DVD -->
+  <div class="card mb-3" data-media-type-target="dvdDetails" style="display: none;">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="bi bi-disc-fill"></i> Detalhes do DVD</h5>
+    </div>
+    <div class="card-body">
+      <%= f.simple_fields_for :dvd_detail do |dvd| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= dvd.input :disc_quantity, 
+                label: 'Quantidade de DVDs',
+                input_html: { class: 'form-control', min: 1, value: 1 } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Detalhes de BLU RAY -->
+  <div class="card mb-3" data-media-type-target="blurayDetails" style="display: none;">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="bi bi-disc-fill"></i> Detalhes do BLU RAY</h5>
+    </div>
+    <div class="card-body">
+      <%= f.simple_fields_for :blu_ray_detail do |bluray| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= bluray.input :disc_quantity, 
+                label: 'Quantidade de BluRays',
+                input_html: { class: 'form-control', min: 1, value: 1 } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Detalhes de Cassete -->
+  <div class="card mb-3" data-media-type-target="cassetteDetails" style="display: none;">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="bi bi-cassette"></i> Detalhes do Cassete</h5>
+    </div>
+    <div class="card-body">
+      <%= f.simple_fields_for :cassette_detail do |cassette| %>
+        <div class="row">
+          <div class="col-md-4">
+            <%= cassette.input :cassette_type_id,
+                collection: @cassette_types,
+                label_method: :name,
+                value_method: :id,
+                label: 'Tipo',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+          <div class="col-md-4">
+            <%= cassette.input :cassette_duration_id,
+                collection: @cassette_durations,
+                label_method: :name,
+                value_method: :id,
+                label: 'Duração',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Faixas (Nested Attributes) -->
+  <div class="card mb-3" data-controller="tracks">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="bi bi-music-note-list"></i> Faixas do Álbum</h5>
+      <button type="button" class="btn btn-sm btn-light" data-action="click->tracks#addTrack">
+        <i class="bi bi-plus-circle"></i> Adicionar Faixa
+      </button>
+    </div>
+    <div class="card-body" data-tracks-wrapper-value="medium">
+      <div id="tracks-container" data-tracks-target="container">
+        <%= f.simple_fields_for :tracks do |track| %>
+          <%= render 'track_fields', f: track %>
+        <% end %>
+      </div>
+      
+      <% if @media_physical.tracks.empty? %>
+        <div class="text-center py-4 text-muted" data-tracks-target="emptyMessage">
+          <i class="bi bi-music-note" style="font-size: 2rem;"></i>
+          <p class="mt-2">Nenhuma faixa adicionada. Clique em "Adicionar Faixa" para começar.</p>
+        </div>
+      <% end %>
+      
+      <!-- Template para novas faixas (será clonado via Stimulus) -->
+      <template data-tracks-target="template">
+        <%= f.simple_fields_for :tracks, Track.new, child_index: 'NEW_RECORD' do |track| %>
+          <%= render 'track_fields', f: track %>
+        <% end %>
+      </template>
+    </div>
+    <div class="card-footer text-muted">
+      <small>
+        <i class="bi bi-info-circle"></i> 
+        Você pode adicionar as faixas agora ou depois de salvar a mídia.
+      </small>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.button :submit, 'Salvar Mídia', class: 'btn btn-primary btn-lg' %>
+    <%= link_to 'Cancelar', media_physicals_path, class: 'btn btn-secondary btn-lg' %>
+  </div>
+<% end %>

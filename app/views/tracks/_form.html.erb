@@ -1,0 +1,84 @@
+<%= simple_form_for [@media_physical, @track], html: { class: 'needs-validation' } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2 mb-3">
+          <%= f.input :track_number, 
+              label: 'Número da Faixa',
+              input_html: { class: 'form-control', min: 1 } %>
+        </div>
+        
+        <% if @media_physical.media_detail&.disc_quantity.to_i > 1 %>
+          <div class="col-md-2 mb-3">
+            <%= f.input :disc_number, 
+                label: 'Número do Disco',
+                input_html: { class: 'form-control', min: 1, max: @media_physical.media_detail.disc_quantity } %>
+          </div>
+        <% end %>
+        
+        <% if @media_physical.vinyl? || @media_physical.cassette? %>
+          <div class ="col-md-2 mb-3">
+            <%= f.input :side, 
+                collection: %w[A B C D],
+                label: 'Lado',
+                input_html: { class: 'form-select' },
+                include_blank: 'Selecione...' %>
+          </div>
+        <% end %>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :track_title, 
+              label: 'Título da Faixa',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :track_artist_name, 
+              label: 'Artista/Intérprete',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :composer, 
+              label: 'Compositor',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <%= f.input :featured_artist, 
+              label: 'Participação Especial (Feat.)',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+          <%= f.input :duration, 
+              label: 'Duração',
+              as: :string,
+              placeholder: 'MM:SS ou HH:MM:SS',
+              hint: 'Formato: 03:45 ou 01:23:45',
+              input_html: { class: 'form-control' } %>
+        </div>
+        
+        <div class="col-md-3 mb-3">
+          <%= f.input :isrc, 
+              label: 'ISRC',
+              hint: 'Código internacional (ex: BRAB71234567)',
+              input_html: { class: 'form-control', maxlength: 12 } %>
+        </div>
+        
+        <div class="col-12">
+          <%= f.input :track_notes, 
+              label: 'Observações',
+              input_html: { class: 'form-control', rows: 3 } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.button :submit, 'Salvar Faixa', class: 'btn btn-primary' %>
+    <%= link_to 'Cancelar', media_physical_path(@media_physical), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

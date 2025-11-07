@@ -1,0 +1,166 @@
+<div class="modal fade" 
+     id="trackModal<%= track.id %>" 
+     tabindex="-1" 
+     aria-labelledby="trackModalLabel<%= track.id %>" 
+     aria-hidden="true"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="trackModalLabel<%= track.id %>">
+          <i class="bi bi-music-note-beamed me-2"></i>
+          Detalhes da Faixa #<%= track.track_number %>
+        </h5>
+        <button type="button" 
+                class="btn-close btn-close-white" 
+                data-bs-dismiss="modal" 
+                aria-label="Fechar">
+        </button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body">
+        <div class="row g-3">
+          <!-- Título da Faixa -->
+          <div class="col-12">
+            <div class="card bg-light">
+              <div class="card-body">
+                <h4 class="mb-0">
+                  <i class="bi bi-disc text-primary me-2"></i>
+                  <%= track.track_title %>
+                </h4>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Informações Principais -->
+          <div class="col-md-6">
+            <div class="info-item">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-hash me-1"></i>Número da Faixa
+              </label>
+              <p class="mb-0 fw-semibold"><%= track.track_number %></p>
+            </div>
+          </div>
+          
+          <% if track.disc_number.present? && track.disc_number > 1 %>
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-vinyl me-1"></i>Disco
+                </label>
+                <p class="mb-0 fw-semibold"><%= track.disc_number %></p>
+              </div>
+            </div>
+          <% end %>
+          
+          <% if track.side.present? %>
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-arrow-left-right me-1"></i>Lado
+                </label>
+                <p class="mb-0">
+                  <span class="badge bg-secondary fs-6">Lado <%= track.side %></span>
+                </p>
+              </div>
+            </div>
+          <% end %>
+          
+          <div class="col-md-6">
+            <div class="info-item">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-clock me-1"></i>Duração
+              </label>
+              <p class="mb-0 fw-semibold">
+                <%= track.formatted_duration || '--:--' %>
+              </p>
+            </div>
+          </div>
+          
+          <!-- Artistas -->
+          <div class="col-12"><hr></div>
+          
+          <div class="col-md-6">
+            <div class="info-item">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-person me-1"></i>Artista/Intérprete
+              </label>
+              <p class="mb-0">
+                <%= track.track_artist_name.presence || media_physical.artist_band %>
+                <% unless track.track_artist_name.present? %>
+                  <small class="text-muted">(do álbum)</small>
+                <% end %>
+              </p>
+            </div>
+          </div>
+          
+          <% if track.composer.present? %>
+            <div class="col-md-6">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-pencil-square me-1"></i>Compositor
+                </label>
+                <p class="mb-0"><%= track.composer %></p>
+              </div>
+            </div>
+          <% end %>
+          
+          <% if track.featured_artist.present? %>
+            <div class="col-12">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-star me-1"></i>Participação Especial (Feat.)
+                </label>
+                <p class="mb-0">
+                  <span class="badge bg-info text-dark"><%= track.featured_artist %></span>
+                </p>
+              </div>
+            </div>
+          <% end %>
+          
+          <!-- Código ISRC -->
+          <% if track.isrc.present? %>
+            <div class="col-12"><hr></div>
+            <div class="col-12">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-upc-scan me-1"></i>ISRC (Código Internacional)
+                </label>
+                <p class="mb-0">
+                  <code class="fs-6"><%= track.isrc %></code>
+                </p>
+              </div>
+            </div>
+          <% end %>
+          
+          <!-- Observações -->
+          <% if track.track_notes.present? %>
+            <div class="col-12"><hr></div>
+            <div class="col-12">
+              <div class="info-item">
+                <label class="text-muted small mb-1">
+                  <i class="bi bi-card-text me-1"></i>Observações
+                </label>
+                <div class="alert alert-secondary mb-0">
+                  <%= simple_format track.track_notes %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" 
+                class="btn btn-secondary" 
+                data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i>Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

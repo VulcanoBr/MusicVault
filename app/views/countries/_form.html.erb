@@ -1,0 +1,26 @@
+<%= simple_form_for @country do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="card">
+    <div class="card-body">
+      <%= f.input :name, 
+          label: 'Nome do País',
+          placeholder: 'Ex: Rock, Jazz, Clássica...',
+          input_html: { class: 'form-control', autofocus: true } %>
+      <%= f.input :code, 
+          label: 'Codigo do País',
+          placeholder: 'Ex: BR, US, GB...',
+          input_html: { class: 'form-control' } %>
+      <%= f.input :flag_code, 
+          label: 'Codigo do País',
+          placeholder: 'Ex: BR, US, GB...',
+          input_html: { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.button :submit, 'Salvar', class: 'btn btn-primary' %>
+    <%= link_to 'Cancelar', countries_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

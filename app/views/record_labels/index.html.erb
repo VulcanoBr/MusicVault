@@ -1,0 +1,68 @@
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="display-5">
+        <i class="bi bi-music-note-list text-primary"></i> Gravadoras
+      </h3>
+      <%= link_to new_record_label_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-circle"></i> Nova Gravadora
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Gravadora</th>
+            <th class="text-center">Mídias</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @record_labels.each do |record_label| %>
+            <tr>
+              <td>
+                <%= link_to record_label.name, record_label, class: 'text-decoration-none fw-semibold' %>
+              </td>
+              <td class="text-center">
+                <span class="badge bg-secondary"><%= record_label.media_physicals.count %></span>
+              </td>
+              <td class="text-center">
+                <div class="btn-group" role="group" aria-label="Ações de Gravadora">
+                  <%= link_to record_label, class: "btn btn-sm btn-outline-primary me-2", title: "Visualizar" do %>
+                    <i class="bi bi-eye"></i> 
+                  <% end %>
+                  <%= link_to edit_record_label_path(record_label), title: "Editar",
+                          class: "btn btn-sm btn-outline-warning me-2" do %>
+                      <i class="bi bi-pencil"></i> 
+                  <% end %>
+                  <%= button_to record_label_path(record_label), method: :delete,
+                      data: { turbo_confirm: "Tem certeza? Esta ação não poderá ser desfeita." },
+                      class: "btn btn-sm btn-outline-danger", title: "Excluir" do %>
+                    <i class="bi bi-trash"></i> 
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if @record_labels.empty? %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">Nenhuma gravadora cadastrada</p>
+        <%= link_to 'Adicionar primeira gravadora', new_record_label_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= paginate @record_labels, theme: 'bootstrap-5' %>
+</div>

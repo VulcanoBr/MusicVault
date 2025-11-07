@@ -1,0 +1,134 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.hover-shadow {
+  transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card {
+  transition: all 0.2s ease;
+}
+
+.btn {
+  transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.info-item {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
+  border-left: 3px solid #0d6efd;
+  transition: all 0.2s ease;
+}
+
+.info-item:hover {
+  background-color: #e9ecef;
+  border-left-color: #0a58ca;
+}
+
+.info-item label {
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+}
+
+.info-item p {
+  font-size: 1.1rem;
+  color: #212529;
+}
+
+.modal-body {
+  max-height: calc(100vh - 200px);
+}
+
+/* Animação suave ao abrir modal */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: scale(0.9);
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+}
+
+/* Botões agrupados com espaçamento */
+.btn-group-sm > .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Destaque ao passar o mouse */
+.btn-outline-info:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Ajuste para badges no modal */
+.badge.fs-6 {
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem;
+}
+
+/* Código ISRC destacado */
+code.fs-6 {
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+  display: inline-block;
+}
+
+// Flag Icons - Tamanhos customizados
+.fi {
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.flag-sm {
+  width: 1em;
+  height: 0.75em;
+  font-size: 1rem;
+}
+
+.flag-lg {
+  width: 2em;
+  height: 1.5em;
+  font-size: 1.5rem;
+}
+
+.flag-xl {
+  width: 3em;
+  height: 2.25em;
+  font-size: 2rem;
+}
+
+// Flag em badges
+.badge .fi {
+  margin-right: 0.25rem;
+}

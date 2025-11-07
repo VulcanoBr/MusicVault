@@ -1,0 +1,64 @@
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="display-5">
+        <i class="bi bi-music-note-list text-primary"></i> Tipos de Duração Fita Cassete
+      </h1>
+      <%= link_to new_cassette_duration_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-circle"></i> Novo Tipo de Duração Fita Cassete
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Tipo Duração Fita Cassete</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cassette_durations.each do |cassette_duration| %>
+            <tr>
+              <td>
+                <%= link_to cassette_duration.name, cassette_duration, class: 'text-decoration-none fw-semibold' %>
+              </td>
+              <td class="text-center">
+                <div class="btn-group" role="group" aria-label="Ações do tipo de duração fita cassete">
+                  <%= link_to cassette_duration, class: "btn btn-sm btn-outline-primary me-2", title: "Visualizar" do %>
+                    <i class="bi bi-eye"></i> 
+                  <% end %>
+                  <%= link_to edit_cassette_duration_path(cassette_duration), 
+                        class: "btn btn-sm btn-outline-warning me-2", title: "Editar" do %>
+                      <i class="bi bi-pencil"></i> 
+                  <% end %>
+                  <%= button_to cassette_duration_path(cassette_duration), method: :delete,
+                      data: { turbo_confirm: "Tem certeza? Esta ação não poderá ser desfeita." },
+                      class: "btn btn-sm btn-outline-danger", title: "Excluir" do %>
+                    <i class="bi bi-trash"></i> 
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if @cassette_durations.empty? %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">Nenhum tipo de Duração Fita Cassete cadastrado</p>
+        <%= link_to 'Adicionar primeiro tipo de duração fita cassete', new_cassette_duration_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= paginate @cassette_durations, theme: 'bootstrap-5' %>
+</div>

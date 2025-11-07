@@ -1,0 +1,83 @@
+
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h3 class="display-5">
+          <i class="bi bi-calendar3 text-primary"></i> Todos os Anos de Lançamento
+        </h3>
+        <p class="lead text-muted">
+          Distribuição da coleção por ano
+        </p>
+      </div>
+      <%= link_to dashboard_path, class: "btn btn-secondary" do %>
+        <i class="bi bi-arrow-left me-1"></i>Voltar
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow">
+  <div class="card-body p-0">
+    <% if @years.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th width="60">#</th>
+              <th>Ano de Lançamento</th>
+              <th class="text-center">Quantidade</th>
+              
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% max_count = @years.map(&:last).max %> 
+            <% @years.each_with_index do |(year, count), index| %>
+              <tr>
+                <td class="text-muted"><%= index + 1 %></td>
+                <td>
+                  <i class="bi bi-calendar-event me-2 text-primary"></i>
+                  <strong><%= year %></strong>
+                  <% decade = (year / 10) * 10 %>
+                  <small class="text-muted">(Década de <%= decade %>)</small>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-secondary rounded-pill fs-6">
+                    <%= count %> <%= count == 1 ? 'mídia' : 'mídias' %>
+                  </span>
+                </td>
+                
+                <td class="text-center">
+                  <%= link_to media_by_year_path(year), 
+                      class: "btn btn-sm btn-outline-primary" do %>
+                    <i class="bi bi-eye me-1"></i>Ver Mídias
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot class="table-light">
+            <tr>
+              <td colspan="2" class="text-center"><strong>Total:</strong></td>
+              <td class="text-center">
+                    
+                <strong><%= @years.map(&:last).sum %> mídias</strong>
+              </td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+        <p class="text-muted mt-3">Nenhuma mídia com ano de lançamento</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= paginate @years, theme: 'bootstrap-5' %>
+</div>

@@ -1,0 +1,80 @@
+<div class="card mb-3 track-item" data-tracks-target="item">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h6 class="text-muted mb-0">Faixa</h6>
+      <button type="button" class="btn btn-sm btn-outline-danger" data-action="click->tracks#removeTrack">
+        <i class="bi bi-trash"></i> Remover
+      </button>
+    </div>
+    
+    <%= f.hidden_field :_destroy %>
+    
+    <div class="row">
+      <div class="col-md-2">
+        <%= f.input :track_number, 
+            label: 'Nº',
+            input_html: { class: 'form-control', min: 1 } %>
+      </div>
+      
+      <div class="col-md-2" data-vinyl-cassette-field style="display: none;">
+        <%= f.input :side, 
+            collection: %w[A B C D],
+            label: 'Lado',
+            input_html: { class: 'form-select' },
+            include_blank: 'Selecione...' %>
+      </div>
+      
+      <div class="col-md-2" data-multi-disc-field style="display: none;">
+        <%= f.input :disc_number, 
+            label: 'Disco',
+            input_html: { class: 'form-control', min: 1, value: 1 } %>
+      </div>
+      
+      <div class="col-md-6">
+        <%= f.input :track_title, 
+            label: 'Título da Faixa',
+            input_html: { class: 'form-control', placeholder: 'Nome da faixa' } %>
+      </div>
+      
+      <div class="col-md-2">
+        <%= f.input :duration, 
+            label: 'Duração',
+            as: :string,
+            placeholder: 'MM:SS',
+            hint: false,
+            input_html: { class: 'form-control' } %>
+      </div>
+      
+      <div class="col-md-5">
+        <%= f.input :track_artist_name, 
+            label: 'Artista (se diferente do álbum)',
+            input_html: { class: 'form-control', placeholder: 'Deixe em branco para usar o artista do álbum' } %>
+      </div>
+      
+      <div class="col-md-5">
+        <%= f.input :composer, 
+            label: 'Compositor',
+            input_html: { class: 'form-control' } %>
+      </div>
+      
+      <div class="col-md-4">
+        <%= f.input :featured_artist, 
+            label: 'Participação (Feat.)',
+            input_html: { class: 'form-control' } %>
+      </div>
+      
+      <div class="col-md-4">
+        <%= f.input :isrc, 
+            label: 'ISRC',
+            hint: 'Ex: BRAB71234567',
+            input_html: { class: 'form-control', maxlength: 12 } %>
+      </div>
+      
+      <div class="col-12">
+        <%= f.input :track_notes, 
+            label: 'Observações',
+            input_html: { class: 'form-control', rows: 2 } %>
+      </div>
+    </div>
+  </div>
+</div>

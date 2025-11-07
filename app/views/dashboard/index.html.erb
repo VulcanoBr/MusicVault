@@ -1,0 +1,506 @@
+<!-- app/views/dashboard/index.html.erb -->
+
+<!-- Header -->
+<div class="row mb-4">
+  <div class="col">
+    <h1 class="display-4 fw-bold">
+      <i class="bi bi-speedometer2 text-primary"></i> Dashboard
+    </h1>
+    <p class="lead text-muted">Visão geral da sua coleção de mídias musicais</p>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- SEÇÃO 1: CARDS DE ESTATÍSTICAS -->
+<!-- ========================================== -->
+<div class="row g-3 mb-5">
+  <!-- Card Total -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-primary">
+      <div class="stat-icon">
+        <i class="bi bi-collection-play-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Total</div>
+        <div class="stat-value"><%= @total_media %></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card Vinil -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-danger">
+      <div class="stat-icon">
+        <i class="bi bi-vinyl-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Vinil</div>
+        <div class="stat-value"><%= @total_vinyl %></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card CD -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-success">
+      <div class="stat-icon">
+        <i class="bi bi-disc-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">CD</div>
+        <div class="stat-value"><%= @total_cd %></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card DVD -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-warning">
+      <div class="stat-icon">
+        <i class="bi bi-disc-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">DVD</div>
+        <div class="stat-value"><%= @total_dvd %></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card Blu-ray -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-dark">
+      <div class="stat-icon">
+        <i class="bi bi-disc-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Blu-ray</div>
+        <div class="stat-value"><%= @total_bluray %></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card Cassete -->
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <div class="stat-card stat-card-secondary">
+      <div class="stat-icon">
+        <i class="bi bi-cassette-fill"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Cassete</div>
+        <div class="stat-value"><%= @total_cassette %></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- SEÇÃO 2: TOP STATS (3 COLUNAS) -->
+<!-- ========================================== -->
+<div class="row g-4 mb-5">
+  
+  <!-- Top Gêneros -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card shadow-sm h-100 hover-lift">
+      <div class="card-header bg-gradient-primary text-white border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-music-note-list me-2"></i>Top Gêneros
+          </h5>
+          <%= link_to all_genres_path, class: "btn btn-sm btn-light" do %>
+            <i class="bi bi-arrow-right"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <% if @genres_stats.any? %>
+          <div class="list-group list-group-flush">
+            <% @genres_stats.first(8).each_with_index do |genre, index| %>
+               
+                <div class= "list-group-item list-group-item-action d-flex justify-content-between align-items-center" >
+                
+                  <span class="rank-badge <%= 'rank-top-3' if index < 3 %>">
+                    <%= index + 1 %>
+                  </span>
+                  <span class="ms-2"><%= genre.name %></span>
+                
+                  <span class="badge bg-primary rounded-pill"><%= genre.media_count %></span>
+                </div>
+              
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mt-2 mb-0">Nenhum dado disponível</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Top Países -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card shadow-sm h-100 hover-lift">
+      <div class="card-header bg-gradient-success text-white border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-globe2 me-2"></i>Top Países
+          </h5>
+          <%= link_to all_countries_path, class: "btn btn-sm btn-light" do %>
+            <i class="bi bi-arrow-right"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <% if @countries_stats.any? %>
+          <div class="list-group list-group-flush">
+            <% @countries_stats.first(8).each_with_index do |country, index| %>
+              
+                <div  class= "list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                
+                  <span class="rank-badge <%= 'rank-top-3' if index < 3 %>">
+                    <%= index + 1 %>
+                  </span>
+                  
+                  <span class="ms-2">
+                    <span class="flag-icon flag-icon-<%= country.flag_code.downcase %>"></span>
+                    <span class="ms-2"><%= country.name %></span>
+                  </span>
+                      
+
+
+  
+                  <span class="badge bg-success rounded-pill"><%= country.media_count %></span>
+                </div>
+              
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mt-2 mb-0">Nenhum dado disponível</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Por Ano de Lançamento -->
+  <div class="col-lg-4 col-md-12">
+    <div class="card shadow-sm h-100 hover-lift">
+      <div class="card-header bg-gradient-info text-white border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-calendar-event me-2"></i>Por Ano
+          </h5>
+          <%= link_to all_years_path, class: "btn btn-sm btn-light" do %>
+            <i class="bi bi-arrow-right"></i>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <% if @media_by_year.any? %>
+          <div class="list-group list-group-flush">
+            <% max_count = @media_by_year.map(&:last).max %>
+            <% @media_by_year.first(8).each_with_index do |(year, count), index| %>
+              
+                
+                <div class="d-flex list-group-item list-group-item-action justify-content-between align-items-center ">
+                  
+                    <span class="rank-badge <%= 'rank-top-3' if index < 3 %>">
+                      <%= index + 1 %>
+                    </span>
+                    <strong class="ms-2"><%= year %></strong>
+                  
+                  <span class="badge bg-info rounded-pill"><%= count %></span>
+                
+                
+                  
+                </div>
+              
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mt-2 mb-0">Nenhum dado disponível</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- SEÇÃO 3: ÚLTIMAS MÍDIAS ADICIONADAS -->
+<!-- ========================================== -->
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm hover-lift">
+      <div class="card-header bg-dark text-white border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-clock-history me-2"></i>Últimas Mídias Adicionadas
+          </h5>
+          <%= link_to media_physicals_path, class: "btn btn-sm btn-outline-light" do %>
+            <i class="bi bi-grid-3x3-gap me-1"></i>Ver Todas
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <% if @recent_media.any? %>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th width="80" class="text-center">Capa</th>
+                  <th width="100">Tipo</th>
+                  <th>Álbum</th>
+                  <th>Artista</th>
+                  <th>Gênero</th>
+                  <th width="80">Ano</th>
+                  <th width="120" class="text-end">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @recent_media.each do |media_physical| %>
+                  <tr>
+                    <td class="text-center">
+                      <% if media_physical.front_cover.attached? %>
+                        <%= image_tag media_physical.front_cover.variant(resize_to_limit: [60, 60]), 
+                                     class: "rounded shadow-sm",
+                                     style: "width: 50px; height: 50px; object-fit: cover;" %>
+                      <% else %>
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                          <i class="bi bi-music-note text-white"></i>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <span class="badge bg-primary bg-gradient">
+                        <%= media_physical.media_type.name %>
+                      </span>
+                    </td>
+                    <td>
+                      <div class="fw-semibold">
+                        <%= link_to media_physical.album_title, media_physical, 
+                            class: 'text-decoration-none text-dark' %>
+                      </div>
+                    </td>
+                    <td class="text-muted">
+                      <%= media_physical.artist_band %>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark border">
+                        <%= media_physical.genre.name %>
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <span class="text-muted"><%= media_physical.release_year %></span>
+                    </td>
+                    <td class="text-end">
+                      <%= link_to media_physical, class: "btn btn-sm btn-outline-primary" do %>
+                        <i class="bi bi-eye me-1"></i>Ver
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div class="text-center py-5">
+            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            <h5 class="text-muted mt-3">Nenhuma mídia cadastrada ainda</h5>
+            <p class="text-muted">Comece adicionando sua primeira mídia à coleção</p>
+            <%= link_to new_media_physical_path, class: 'btn btn-primary btn-lg mt-2' do %>
+              <i class="bi bi-plus-circle me-2"></i>Adicionar Primeira Mídia
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- CSS CUSTOMIZADO -->
+<!-- ========================================== -->
+<style>
+  /* Cards de Estatísticas Modernos */
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    transition: all 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+  
+  .stat-card-primary::before { background: linear-gradient(to right, #0d6efd, #0a58ca); }
+  .stat-card-danger::before { background: linear-gradient(to right, #dc3545, #b02a37); }
+  .stat-card-success::before { background: linear-gradient(to right, #198754, #146c43); }
+  .stat-card-warning::before { background: linear-gradient(to right, #ffc107, #ffca2c); }
+  .stat-card-dark::before { background: linear-gradient(to right, #212529, #343a40); }
+  .stat-card-secondary::before { background: linear-gradient(to right, #6c757d, #5c636a); }
+  
+  .stat-icon {
+    font-size: 2.5rem;
+    opacity: 0.7;
+  }
+  
+  .stat-card-primary .stat-icon { color: #0d6efd; }
+  .stat-card-danger .stat-icon { color: #dc3545; }
+  .stat-card-success .stat-icon { color: #198754; }
+  .stat-card-warning .stat-icon { color: #ffc107; }
+  .stat-card-dark .stat-icon { color: #212529; }
+  .stat-card-secondary .stat-icon { color: #6c757d; }
+  
+  .stat-content {
+    flex: 1;
+  }
+  
+  .stat-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1;
+  }
+  
+  /* Gradientes nos Headers */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+  }
+  
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #198754 0%, #146c43 100%) !important;
+  }
+  
+  .bg-gradient-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #087990 100%) !important;
+  }
+  
+  /* Badges de Ranking */
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #495057;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  
+  .rank-top-3 {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #212529;
+    box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+  }
+  
+  /* Hover nos Cards */
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+  }
+  
+  /* List Group Customizado */
+  .list-group-item-action {
+    transition: all 0.2s ease;
+  }
+  
+  .list-group-item-action:hover {
+    background-color: #f8f9fa;
+    padding-left: 1.5rem !important;
+  }
+  
+  /* Progress bars customizadas */
+  .progress {
+    background-color: #e9ecef;
+  }
+  
+  /* Cards com altura uniforme */
+  .h-100 {
+    min-height: 450px;
+  }
+  
+  /* Responsividade para os cards de estatísticas */
+  @media (max-width: 768px) {
+    .stat-card {
+      padding: 1rem;
+    }
+    
+    .stat-icon {
+      font-size: 2rem;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+    }
+  }
+  
+  /* Animação suave ao carregar */
+  .stat-card,
+  .card {
+    animation: fadeInUp 0.5s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Delay nas animações */
+  .stat-card:nth-child(1) { animation-delay: 0.1s; }
+  .stat-card:nth-child(2) { animation-delay: 0.2s; }
+  .stat-card:nth-child(3) { animation-delay: 0.3s; }
+  .stat-card:nth-child(4) { animation-delay: 0.4s; }
+  .stat-card:nth-child(5) { animation-delay: 0.5s; }
+  .stat-card:nth-child(6) { animation-delay: 0.6s; }
+</style>

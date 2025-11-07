@@ -1,0 +1,143 @@
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h3 class="display-5">
+          <i class="bi bi-music-note-list text-primary"></i> <%= @genre.name %>
+        </h3>
+        <p class="lead text-muted">
+          <%= @media.total_count %> <%= @media.total_count == 1 ? 'mídia encontrada' : 'mídias encontradas' %>
+        </p>
+      </div>
+      <%= link_to all_genres_path, class: "btn btn-secondary" do %>
+        <i class="bi bi-arrow-left me-1"></i>Voltar
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow">
+  <div class="card-body p-0">
+    <% if @media.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th width="80">Capa</th>
+              <th width="120">Tipo</th>
+              <th>Álbum</th>
+              <th>Artista</th>
+              <th width="100">Ano</th>
+              <th width="150">Gravadora</th>
+              <th width="120">País</th>
+              <th width="100" class="text-center">Faixas</th>
+              <th width="120" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @media.each do |media_physical| %>
+              <tr>
+                <!-- Capa -->
+                <td>
+                  <% if media_physical.front_cover.attached? %>
+                    <%= image_tag media_physical.front_cover.variant(resize_to_limit: [80, 80]), 
+                                 class: "img-thumbnail", 
+                                 alt: media_physical.album_title,
+                                 style: "width: 60px; height: 60px; object-fit: cover;" %>
+                  <% else %>
+                    <div class="bg-secondary d-flex align-items-center justify-content-center rounded"
+                         style="width: 60px; height: 60px;">
+                      <i class="bi bi-music-note text-white"></i>
+                    </div>
+                  <% end %>
+                </td>
+                
+                <!-- Tipo -->
+                <td>
+                  <span class="badge bg-primary">
+                    <%= media_physical.media_type.name %>
+                  </span>
+                </td>
+                
+                <!-- Álbum -->
+                <td>
+                  <strong><%= link_to media_physical.album_title, media_physical, class: 'text-decoration-none' %></strong>
+                  <% if media_physical.release_type.present? %>
+                    <br>
+                    <small class="text-muted">
+                      <i class="bi bi-tag-fill"></i> <%= media_physical.release_type.name %>
+                    </small>
+                  <% end %>
+                </td>
+                
+                <!-- Artista -->
+                <td><%= media_physical.artist_band %></td>
+                
+                <!-- Ano -->
+                <td class="text-center">
+                  <span class="badge bg-secondary">
+                    <%= media_physical.release_year %>
+                  </span>
+                </td>
+                
+                <!-- Gravadora -->
+                <td>
+                  <small>
+                    <i class="bi bi-building"></i>
+                    <%= media_physical.record_label.name %>
+                  </small>
+                </td>
+                
+                <!-- País -->
+                <td>
+                  <small>
+                    <span class="me-2 flag-icon flag-icon-<%= media_physical.country.flag_code.downcase %>"></span>
+                    <%= media_physical.country.name %>
+                  </small>
+                </td>
+                
+                <!-- Faixas -->
+                <td class="text-center">
+                  <span class="badge bg-info text-dark">
+                    <%= media_physical.tracks.count %> faixas
+                  </span>
+                </td>
+                
+                <!-- Ações -->
+                <td class="text-center">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to media_physical, 
+                        class: "btn btn-outline-primary",
+                        title: "Ver Detalhes" do %>
+                      <i class="bi bi-eye"></i>
+                    <% end %>
+                    
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+        <p class="text-muted mt-3">Nenhuma mídia encontrada neste gênero</p>
+        <%= link_to 'Voltar para gêneros', all_genres_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+  
+  <% if @media.any? %>
+    <div class="card-footer bg-light">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted">
+          Mostrando <%= @media.offset_value + 1 %> a <%= [@media.offset_value + @media.length, @media.total_count].min %> 
+          de <%= @media.total_count %> 
+          <%= @media.total_count == 1 ? 'mídia' : 'mídias' %>
+        </div>
+        <%= paginate @media, theme: 'bootstrap-5' %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,175 @@
+<div class="row mb-4">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="display-5">
+        <i class="bi bi-collection-play text-primary"></i> Mídias
+      </h3>
+      <%= link_to new_media_physical_path, class: "btn btn-primary btn-lg" do %>
+        <i class="bi bi-plus-circle"></i> Nova Mídia
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="card mb-4">
+  <div class="card-body">
+    <%= form_with url: media_physicals_path, method: :get, class: "row g-3" do |f| %>
+      <div class="col-md-3">
+        <%= f.label :media_type, "Tipo de Mídia", class: "form-label" %>
+        <%= f.select :media_type, 
+            options_for_select(@media_types.pluck(:name, :name), params[:media_type]),
+            { include_blank: "Todos" }, 
+            class: "form-select" %>
+      </div>
+      
+      <div class="col-md-3">
+        <%= f.label :genre_id, "Gênero", class: "form-label" %>
+        <%= f.select :genre_id, 
+            options_from_collection_for_select(@genres, :id, :name, params[:genre_id]),
+            { include_blank: "Todos" }, 
+            class: "form-select" %>
+      </div>
+      
+      <div class="col-md-2">
+        <%= f.label :year, "Ano", class: "form-label" %>
+        <%= f.text_field :year, value: params[:year], class: "form-control", placeholder: "Ex: 2024" %>
+      </div>
+      
+      <div class="col-md-3">
+        <%= f.label :artist, "Artista", class: "form-label" %>
+        <%= f.text_field :artist, value: params[:artist], class: "form-control", placeholder: "Nome do artista" %>
+      </div>
+      
+      <div class="col-md-1 d-flex align-items-end">
+        <%= f.submit "Filtrar", class: "btn btn-primary w-100" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-dark text-white">
+    <h5 class="mb-0">
+      <i class="bi bi-collection-play me-2"></i>
+      Lista de Mídias (<%= @media_physicals.total_count %>)
+    </h5>
+  </div>
+  <div class="card-body p-0">
+    <% if @media_physicals.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th width="80">Capa</th>
+              <th width="120">Tipo</th>
+              <th>Álbum</th>
+              <th>Artista</th>
+              <th width="150">Gênero</th>
+              <th width="80" class="text-center">Ano</th>
+              <th width="100" class="text-center">Faixas</th>
+              <th width="180" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @media_physicals.each do |media_physical| %>
+              <tr>
+                <td>
+                  <% if media_physical.front_cover.attached? %>
+                    <%= link_to media_physical do %>
+                      <%= image_tag media_physical.front_cover.variant(resize_to_limit: [100, 100]), 
+                                  class: "img-thumbnail", 
+                                  alt: media_physical.album_title,
+                                  style: "width: 60px; height: 60px; object-fit: cover;" %>
+                    <% end %>
+                  <% else %>
+                    <div class="bg-secondary d-flex align-items-center justify-content-center rounded" 
+                         style="width: 60px; height: 60px;">
+                      <i class="bi bi-music-note-beamed text-white"></i>
+                    </div>
+                  <% end %>
+                </td>
+                
+                <td>
+                  <span class="badge bg-primary">
+                    <%= media_physical.media_type.name %>
+                  </span>
+                </td>
+                
+                <td>
+                  <%= link_to media_physical.album_title, media_physical, 
+                      class: "text-decoration-none fw-semibold" %>
+                </td>
+                
+                <td class="text-muted">
+                  <%= media_physical.artist_band %>
+                </td>
+                
+                <td>
+                  <span class="badge bg-secondary">
+                    <%= media_physical.genre.name %>
+                  </span>
+                </td>
+                
+                <td class="text-center">
+                  <i class="bi bi-calendar me-1"></i>
+                  <%= media_physical.release_year %>
+                </td>
+                
+                <td class="text-center">
+                  <span class="badge bg-info text-dark">
+                    <i class="bi bi-music-note me-1"></i>
+                    <%= media_physical.total_tracks %>
+                  </span>
+                </td>
+                
+                <td class="text-center">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to media_physical, 
+                        class: "btn btn-outline-primary me-2",
+                        title: "Ver Detalhes" do %>
+                      <i class="bi bi-eye"></i>
+                    <% end %>
+                    
+                    <%= link_to edit_media_physical_path(media_physical), 
+                        class: "btn btn-outline-warning me-2",
+                        title: "Editar" do %>
+                      <i class="bi bi-pencil"></i>
+                    <% end %>
+                    
+                    <%= button_to media_physical_path(media_physical), 
+                        method: :delete,
+                        data: { turbo_confirm: "Tem certeza que deseja excluir esta mídia?" },
+                        class: "btn btn-outline-danger",
+                        title: "Excluir" do %>
+                      <i class="bi bi-trash"></i>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+        <p class="text-muted mt-3">Nenhuma mídia encontrada</p>
+        <%= link_to 'Adicionar primeira mídia', new_media_physical_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<% if @media_physicals.empty? %>
+  <div class="text-center py-5">
+    <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+    <p class="text-muted mt-3">Nenhuma mídia encontrada</p>
+  </div>
+<% end %>
+
+<div class="mt-4">
+  <%= paginate @media_physicals, theme: 'bootstrap-5' %>
+</div>
+

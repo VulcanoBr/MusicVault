@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-4">
+    <h6 class="text-muted mb-1">Quantidade de Discos</h6>
+    <p><%= detail.disc_quantity %></p>
+  </div>
+  <div class="col-md-4">
+    <h6 class="text-muted mb-1">Tamanho</h6>
+    <p><%= detail.size || 'Não informado' %></p>
+  </div>
+  <div class="col-md-4">
+    <h6 class="text-muted mb-1">Velocidade</h6>
+    <p><%= detail.speed || 'Não informado' %></p>
+  </div>
+  <div class="col-md-4">
+    <h6 class="text-muted mb-1">Cor</h6>
+    <p><%= detail.color || 'Não informado' %></p>
+  </div>
+  <div class="col-md-4">
+    <h6 class="text-muted mb-1">Edição</h6>
+    <p><%= detail.edition || 'Não informado' %></p>
+  </div>
+  <% if detail.matrix_number.present? %>
+    <div class="col-md-4">
+      <h6 class="text-muted mb-1">Número de Prensagem</h6>
+      <p><code><%= detail.matrix_number %></code></p>
+    </div>
+  <% end %>
+</div>
