@@ -1,6 +1,6 @@
 class MediaPhysicalsController < ApplicationController
   # Usa um before_action para buscar o mídia nas ações show, edit, update, destroy
-  before_action :set_media_physical, only: %i[ show edit update destroy ]
+  before_action :set_media_physical, only: %i[ show show_tracks edit update destroy ]
   before_action :load_form_collections, only: [:new, :edit, :create, :update]
 
   # GET /medias
@@ -26,19 +26,21 @@ class MediaPhysicalsController < ApplicationController
     @tracks = @media_physical.tracks.ordered
   end
 
+  # GET /medias/1
+  def show_tracks
+    @tracks = @media_physical.tracks.ordered
+  end
+
   # GET /medias/new
   def new
     @media_physical = MediaPhysical.new
-    # Constrói 3 faixas em branco para o formulário
-    #3.times { @media.tracks.build }
+
     build_media_details
   end
 
   # GET /medias/1/edit
   def edit
-    # Se não houver faixas, constrói algumas em branco para facilitar a adição
-    #@media.tracks.build if @media.tracks.empty?
-    build_media_details if @media_physical.media_detail.nil?
+    build_media_details # if @media_physical.media_details.nil?
   end
 
   # POST /medias
@@ -138,6 +140,8 @@ class MediaPhysicalsController < ApplicationController
       :front_cover,
       :back_cover,
       :general_notes,
+      :remove_front_cover,
+      :remove_back_cover,
 
       # Permite os atributos dos detalhes de vinil aninhados
       vinyl_detail_attributes: [
@@ -161,7 +165,7 @@ class MediaPhysicalsController < ApplicationController
 
       # Permite os atributos dos detalhes de Cassete aninhados
       cassette_detail_attributes: [
-        :id, :cassette_type_id, :cassette_duration_id, :_destroy
+        :id, :disc_quantity, :cassette_type_id, :cassette_duration_id, :_destroy
       ],
 
       # Permite os atributos das faixas aninhadas

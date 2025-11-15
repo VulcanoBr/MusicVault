@@ -10,7 +10,7 @@
               input_html: { class: 'form-control', min: 1 } %>
         </div>
         
-        <% if @media_physical.media_detail&.disc_quantity.to_i > 1 %>
+        <% if @media_physical.media_detail&.disc_quantity&.to_i > 1 %>
           <div class="col-md-2 mb-3">
             <%= f.input :disc_number, 
                 label: 'Número do Disco',

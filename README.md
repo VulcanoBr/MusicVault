@@ -26,7 +26,7 @@ Sistema completo para catalogação e gerenciamento de coleções de mídias mus
 
 ## 🎯 Sobre o Projeto
 
-O **Catálogo de Mídias Musicais** é uma aplicação web desenvolvida em Ruby on Rails para colecionadores de mídias físicas que desejam organizar, catalogar e gerenciar suas coleções de forma profissional e eficiente.
+O **Catálogo de Mídias Musicais** é uma aplicação web desenvolvida em Ruby on Rails 7 para colecionadores de mídias físicas que desejam organizar, catalogar e gerenciar suas coleções de forma profissional e eficiente.
 
 ### Características Principais
 
@@ -80,6 +80,7 @@ O **Catálogo de Mídias Musicais** é uma aplicação web desenvolvida em Ruby 
 - Filtrar por gênero
 - Filtrar por ano de lançamento
 - Filtrar por artista
+- Filtrar por faixas(musicas)
 
 ### Dashboard e Estatísticas
 
@@ -295,15 +296,19 @@ Na página de listagem de mídias:
 
 ### Lista de Mídias
 
-![Lista de Mídias](public/images/lista-de-midias.png)
+![Lista de Mídias](public/images/medias.png)
+
+### Lista de Faixas
+
+![Lista de Faixas](public/images/faixas.png)
 
 ### Detalhes da Mídia
 
-![Detalhes](public/imagess/detalhes-da-midia.png)
+![Detalhes](public/images/midia_show.png)
 
 ### Formulário de Cadastro
 
-![Formulário](public/images/cadastro-da-midia.png)
+![Formulário](public/images/new_midia.png)
 
 ## 🤝 Contribuindo
 

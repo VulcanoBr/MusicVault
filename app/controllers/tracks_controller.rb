@@ -1,5 +1,5 @@
 class TracksController < ApplicationController
-  before_action :set_media_physical
+  before_action :set_media_physical, except: [:all_tracks]
   before_action :set_track, only: [:show, :edit, :update, :destroy]
 
   # GET /media/:media_id/tracks
@@ -61,6 +61,33 @@ class TracksController < ApplicationController
     end
 
     redirect_to media_physical_path(@media), notice: "#{track_count} faixas criadas com sucesso."
+  end
+
+  def all_tracks
+    @tracks = Track.includes(:media_physical => [:media_type, :genre])
+                   .order(updated_at: :desc)
+
+    # Filtros
+    if params[:genre_id].present?
+      @tracks = @tracks.joins(media_physical: :genre)
+                       .where(media_physicals: { genre_id: params[:genre_id] })
+    end
+
+    if params[:artist].present?
+      @tracks = @tracks.joins(:media_physical)
+                       .where('media_physicals.artist_band ILIKE ? OR tracks.track_artist_name ILIKE ?',
+                              "%#{params[:artist]}%", "%#{params[:artist]}%")
+    end
+
+    if params[:track_name].present?
+      @tracks = @tracks.where('tracks.track_title ILIKE ?', "%#{params[:track_name]}%")
+    end
+
+    # Paginação
+    @tracks = @tracks.page(params[:page]).per(10)
+
+    # Para os filtros
+    @genres = Genre.order(:name)
   end
 
   private

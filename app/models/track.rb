@@ -1,6 +1,8 @@
 class Track < ApplicationRecord
   belongs_to :media_physical, inverse_of: :tracks
 
+  SIDES = %w[A B C D].freeze
+
   validates :track_number, presence: true, numericality: {
     only_integer: true,
     greater_than: 0
@@ -13,7 +15,7 @@ class Track < ApplicationRecord
     in: %w[A B C D],
     allow_blank: true
   }
-  #validates :side, inclusion: { in: %w[A B] }, allow_nil: true
+
   validates :duration, presence: true, format: { with: /\A\d{1,2}:\d{2}\z/, message: "deve estar no formato MM:SS" }
   validates :track_title, presence: true
   validates :track_artist_name, length: { maximum: 255 }, allow_blank: true

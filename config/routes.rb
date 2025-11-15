@@ -13,7 +13,12 @@ Rails.application.routes.draw do
   get 'dashboard/by_year/:year', to: 'dashboard#by_year', as: 'media_by_year'
   get 'dashboard/by_country/:id', to: 'dashboard#by_country', as: 'media_by_country'
 
+  get 'tracks', to: 'tracks#all_tracks', as: 'all_tracks'
+
   resources :media_physicals do
+    member do
+      get :show_tracks
+    end
     collection do
       get :search
     end

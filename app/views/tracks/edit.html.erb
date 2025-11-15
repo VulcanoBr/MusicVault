@@ -1,16 +1,9 @@
-<div class="row mb-4">
+<div class="row ">
   <div class="col">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><%= link_to "Mídias", media_physicals_path %></li>
-        <li class="breadcrumb-item"><%= link_to @media_physical.album_title, @media_physical %></li>
-        <li class="breadcrumb-item active">Editar Faixa</li>
-      </ol>
-    </nav>
-    <h2>
-      <i class="bi bi-pencil"></i> Editar Faixa
-    </h2>
-    <p class="text-muted"><%= @track.track_title %></p>
+    <h3>
+      <i class="bi bi-pencil"></i> Editar Faixa  
+    </h3>
+    <h5><%= @media_physical.album_title %> - <%= @media_physical.artist_band %> </h5>
   </div>
 </div>
 

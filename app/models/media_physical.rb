@@ -90,9 +90,6 @@ class MediaPhysical < ApplicationRecord
   def total_duration
     return nil if tracks.empty?
 
-    # Lógica para somar a duração de todas as faixas associadas
-    # Você precisará de um helper para somar strings de tempo (MM:SS)
-    # Exemplo (simplificado):
     total_seconds = tracks.sum do |track|
       next 0 unless track.duration
       parts = track.duration.split(':')

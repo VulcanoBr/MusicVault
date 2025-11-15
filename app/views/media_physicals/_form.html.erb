@@ -1,5 +1,5 @@
 <%= simple_form_for @media_physical, html: { class: 'needs-validation', novalidate: true,
-                                            data: { controller: 'media-type' } } do |f| %>
+                                            data: { controller: 'media-type'  } } do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
@@ -277,6 +277,11 @@
       <%= f.simple_fields_for :cassette_detail do |cassette| %>
         <div class="row">
           <div class="col-md-4">
+            <%= cassette.input :disc_quantity, 
+                label: 'Quantidade de Fitas',
+                input_html: { class: 'form-control', min: 1, value: 1 } %>
+          </div>
+          <div class="col-md-4">
             <%= cassette.input :cassette_type_id,
                 collection: @cassette_types,
                 label_method: :name,
@@ -300,41 +305,58 @@
   </div>
 
   <!-- Faixas (Nested Attributes) -->
-  <div class="card mb-3" data-controller="tracks">
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0"><i class="bi bi-music-note-list"></i> Faixas do Álbum</h5>
-      <button type="button" class="btn btn-sm btn-light" data-action="click->tracks#addTrack">
-        <i class="bi bi-plus-circle"></i> Adicionar Faixa
-      </button>
-    </div>
-    <div class="card-body" data-tracks-wrapper-value="medium">
-      <div id="tracks-container" data-tracks-target="container">
-        <%= f.simple_fields_for :tracks do |track| %>
-          <%= render 'track_fields', f: track %>
-        <% end %>
+  <% if local_assigns.fetch(:show_tracks, true) %>
+    <div class="card mb-3" data-controller="tracks" >
+      <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-music-note-list"></i> Faixas do Álbum</h5>
+        <button type="button" class="btn btn-sm btn-light" data-action="click->tracks#addTrack">
+          <i class="bi bi-plus-circle"></i> Adicionar Faixa
+        </button>
       </div>
-      
-      <% if @media_physical.tracks.empty? %>
-        <div class="text-center py-4 text-muted" data-tracks-target="emptyMessage">
-          <i class="bi bi-music-note" style="font-size: 2rem;"></i>
-          <p class="mt-2">Nenhuma faixa adicionada. Clique em "Adicionar Faixa" para começar.</p>
-        </div>
-      <% end %>
-      
-      <!-- Template para novas faixas (será clonado via Stimulus) -->
-      <template data-tracks-target="template">
-        <%= f.simple_fields_for :tracks, Track.new, child_index: 'NEW_RECORD' do |track| %>
-          <%= render 'track_fields', f: track %>
+      <div class="card-body" data-tracks-wrapper-value="medium">
+        <div id="tracks-container" data-tracks-target="container">
+          <%= f.simple_fields_for :tracks do |track| %>
+            <%= render 'track_fields', f: track %>
+          <% end %>
+        </div>  
+        
+        <% if @media_physical.tracks.empty? %>
+          <div class="text-center py-4 text-muted" data-tracks-target="emptyMessage">
+            <i class="bi bi-music-note" style="font-size: 2rem;"></i>
+            <p class="mt-2">Nenhuma faixa adicionada. Clique em "Adicionar Faixa" para começar.</p>
+          </div>
         <% end %>
-      </template>
+        
+        <!-- Template para novas faixas (será clonado via Stimulus) -->
+        <template data-tracks-target="template">
+          <%= f.simple_fields_for :tracks, Track.new, child_index: 'NEW_RECORD' do |track| %>
+            <%= render 'track_fields', f: track %>
+          <% end %>
+        </template>
+      </div>
+      <div class="card-footer text-muted">
+        <small>
+          <i class="bi bi-info-circle"></i> 
+          Você pode adicionar as faixas agora ou depois de salvar a mídia.
+        </small>
+      </div>
     </div>
-    <div class="card-footer text-muted">
-      <small>
-        <i class="bi bi-info-circle"></i> 
-        Você pode adicionar as faixas agora ou depois de salvar a mídia.
-      </small>
+  <% else %>
+    <!-- Aviso quando está editando -->
+    <div class="alert alert-danger">
+      <h5 class="alert-heading">
+        <i class="bi bi-info-circle me-2"></i>
+        Edição de Faixas
+      </h5>
+      <p class="mb-2">
+        Para adicionar, editar ou remover faixas, use a página de detalhes da mídia.
+      </p>
+      <%= link_to media_physical_path(@media_physical), class: "btn btn-sm btn-primary" do %>
+        <i class="bi bi-music-note-list me-2"></i>
+        Gerenciar Faixas
+      <% end %>
     </div>
-  </div>
+  <% end %>
 
   <div class="d-flex gap-2">
     <%= f.button :submit, 'Salvar Mídia', class: 'btn btn-primary btn-lg' %>

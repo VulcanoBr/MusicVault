@@ -19,17 +19,11 @@ export default class extends Controller {
   }
 
   toggleDetails() {
-    console.log('Derails')
-    //const select = this.element.querySelector(
-    //   'select[name="media_physical[media_type_id]"]'
-    //)
     const select = this.mediaTypeSelectTarget
-    console.log('select ', select)
-    // if (!select) return
 
     const selectedOption = select.options[select.selectedIndex]
     const selectedText = selectedOption ? selectedOption.text : ''
-    console.log('selectOption ', selectedOption, 'selectText ', selectedText)
+
     const selectedValue = selectedOption ? selectedOption.value : ''
 
     // Esconde todos
@@ -37,29 +31,21 @@ export default class extends Controller {
 
     // Mostra o relevante
     if (selectedText === 'Vinyl') {
-      console.log('Mostrando Vinyl Details')
       this.showTarget(this.vinylDetailsTarget)
       this.toggleTrackFields('vinyl')
     } else if (selectedText === 'CD') {
-      console.log('Mostrando CD Details')
       this.showTarget(this.cdDetailsTarget)
       this.toggleTrackFields('cd')
     } else if (selectedText === 'DVD') {
-      console.log('Mostrando DVD Details')
       this.showTarget(this.dvdDetailsTarget)
       this.toggleTrackFields('dvd')
     } else if (selectedText === 'Blu-Ray') {
-      // CORRIGIDO
-      console.log('Mostrando Blu-Ray Details')
       this.showTarget(this.blurayDetailsTarget)
       this.toggleTrackFields('bluray')
     } else if (selectedText === 'Cassette Tape') {
-      console.log('Mostrando Cassette Details')
       this.showTarget(this.cassetteDetailsTarget)
       this.toggleTrackFields('cassette')
     }
-
-    // Notifica o tracks controller
     this.notifyTracksController()
   }
 
@@ -83,8 +69,6 @@ export default class extends Controller {
   }
 
   toggleTrackFields(mediaType) {
-    console.log('Toggling track fields for:', mediaType)
-
     // Mostra/esconde campos específicos nas faixas baseado no tipo de mídia
     const vinylCassetteFields = document.querySelectorAll(
       '[data-vinyl-cassette-field]'
@@ -116,7 +100,6 @@ export default class extends Controller {
 
   checkMultiDisc(mediaType) {
     let quantityInput
-    console.log('CheckMultiDisc:', mediaType)
 
     if (mediaType === 'vinyl') {
       quantityInput = document.querySelector(
@@ -159,24 +142,28 @@ export default class extends Controller {
     if (vinylQuantity) {
       vinylQuantity.addEventListener('input', e => {
         this.updateMultiDiscFields(e.target.value)
+        this.notifyTracksController()
       })
     }
 
     if (cdQuantity) {
       cdQuantity.addEventListener('input', e => {
         this.updateMultiDiscFields(e.target.value)
+        this.notifyTracksController()
       })
     }
 
     if (dvdQuantity) {
       dvdQuantity.addEventListener('input', e => {
         this.updateMultiDiscFields(e.target.value)
+        this.notifyTracksController()
       })
     }
 
     if (blurayQuantity) {
       blurayQuantity.addEventListener('input', e => {
         this.updateMultiDiscFields(e.target.value)
+        this.notifyTracksController()
       })
     }
   }

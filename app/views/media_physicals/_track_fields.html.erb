@@ -1,4 +1,5 @@
-<div class="card mb-3 track-item" data-tracks-target="item">
+<div class="card mb-3 track-item" data-tracks-target="item" > 
+  <%= f.hidden_field :id %>
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-start mb-2">
       <h6 class="text-muted mb-0">Faixa</h6>
@@ -16,15 +17,16 @@
             input_html: { class: 'form-control', min: 1 } %>
       </div>
       
-      <div class="col-md-2" data-vinyl-cassette-field style="display: none;">
+      <div class="col-md-2"  data-vinyl-cassette-field style="display: block;">                     
         <%= f.input :side, 
             collection: %w[A B C D],
             label: 'Lado',
+            selected: f.object.side,
             input_html: { class: 'form-select' },
             include_blank: 'Selecione...' %>
       </div>
       
-      <div class="col-md-2" data-multi-disc-field style="display: none;">
+      <div class="col-md-2" data-multi-disc-field > 
         <%= f.input :disc_number, 
             label: 'Disco',
             input_html: { class: 'form-control', min: 1, value: 1 } %>

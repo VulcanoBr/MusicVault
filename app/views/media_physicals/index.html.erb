@@ -65,10 +65,10 @@
               <th width="120">Tipo</th>
               <th>Álbum</th>
               <th>Artista</th>
-              <th width="150">Gênero</th>
-              <th width="80" class="text-center">Ano</th>
-              <th width="100" class="text-center">Faixas</th>
-              <th width="180" class="text-center">Ações</th>
+              <th >Gênero</th>
+              <th class="text-center">Ano</th>
+              <th  class="text-center">Faixas</th>
+              <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -140,9 +140,15 @@
                     <%= button_to media_physical_path(media_physical), 
                         method: :delete,
                         data: { turbo_confirm: "Tem certeza que deseja excluir esta mídia?" },
-                        class: "btn btn-outline-danger",
+                        class: "btn btn-outline-danger me-2",
                         title: "Excluir" do %>
                       <i class="bi bi-trash"></i>
+                    <% end %>
+
+                    <%= link_to show_tracks_media_physical_path(media_physical),  
+                        class: "btn btn-outline-success",
+                        title: "Ver Faixas" do %>
+                      <i class="bi bi-music-note-beamed text-white"></i>
                     <% end %>
                   </div>
                 </td>
