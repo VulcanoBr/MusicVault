@@ -54,6 +54,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_31_005436) do
     t.bigint "media_physical_id", null: false
     t.bigint "cassette_type_id", null: false
     t.bigint "cassette_duration_id", null: false
+    t.integer "disc_quantity", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cassette_duration_id"], name: "index_cassette_details_on_cassette_duration_id"

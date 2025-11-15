@@ -35,8 +35,10 @@
             <% if @media_physical.vinyl? || @media_physical.cassette? %>
               <th >Lado</th>
             <% end %>
-            <% if !@media_physical.cassette? %>
-              <th >Disco</th>
+            <% if @media_physical.cassette? %>
+                  <th>Fita</th>
+            <% end %>
+                  <th >Disco</th>
             <% end %>
             <th>Título</th>
             <th>Artista</th>

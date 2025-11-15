@@ -136,8 +136,10 @@
             <% if @media_physical.vinyl? || @media_physical.cassette? %>
               <th >Lado</th>
             <% end %>
-            <% if !@media_physical.cassette? %>
-              <th >Disco</th>
+            <% if @media_physical.cassette? %>
+                  <th>Fita</th>
+            <% else %>
+                  <th >Disco</th>
             <% end %>
             <th>Título</th>
             <th>Artista</th>
@@ -152,9 +154,9 @@
               <% if @media_physical.vinyl? || @media_physical.cassette? %>
                 <td><span class="badge bg-secondary"><%= track.side %></span></td>
               <% end %>
-              <% if !@media_physical.cassette? %>
+              
                 <td><%= track.disc_number %></td>
-              <% end %>
+              
               <td><%= track.track_title %></td>
               <td class=""><%= track.track_artist_name.presence || @media_physical.artist_band %></td>
               <td><%= track.formatted_duration %></td>

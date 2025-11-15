@@ -476,7 +476,8 @@ namespace :dev_catalog do
 
       media.create_cassette_detail!(
         cassette_type_id: cassette_type_ids.sample,
-        cassette_duration_id: cassette_duration_ids.sample
+        cassette_duration_id: cassette_duration_ids.sample,
+        disc_quantity: 1
       )
 
       main_track_artist = media.artist_band # MUDANÇA 2
