@@ -36,22 +36,15 @@ class DashboardController < ApplicationController
     @genres = Genre.joins(:media_physicals)
                    .select('genres.*, COUNT(media_physicals.id) as media_count')
                    .group('genres.id')
-                   .order('genres.name ASC').page(params[:page]).per(10)
-  end
-
-  def all_years
-    # Pega todos os anos com contagem
-    all_years_hash = MediaPhysical.where.not(release_year: nil)
-                                  .group(:release_year)
-                                  .count
-                                  .sort_by { |year, _| year }
-                                  .reverse
-
-    # Converte hash para array de objetos paginável
-    @years = Kaminari.paginate_array(all_years_hash).page(params[:page]).per(10)
-
-    # Calcula o máximo para a barra de progresso (de todos os anos, não só da página)
-    @max_count = all_years_hash.values_at.max || 1
+                   
+    if params[:search].present?
+      @genres = @genres.where('genres.name ILIKE ?', "%#{params[:search]}%")
+      @search_term = params[:search]
+    end
+    
+    @genres = @genres.order('genres.name ASC')
+                    .page(params[:page])
+                    .per(10)
   end
 
   def by_genre
@@ -60,6 +53,44 @@ class DashboardController < ApplicationController
                    .includes(:media_type, :record_label, :country)
                    .order(album_title: :asc)
                    .page(params[:page]).per(10)
+  end
+
+  def OLD_all_years
+    all_years_hash = MediaPhysical.where.not(release_year: nil)
+                                  .group(:release_year)
+                                  .count
+                                  .sort_by { |year, _| year }
+                                  .reverse
+
+    @years = Kaminari.paginate_array(all_years_hash).page(params[:page]).per(10)
+
+    @max_count = all_years_hash.values_at.max || 1
+  end
+
+  def all_years
+    # Captura o termo de busca
+    @search_term = params[:search]
+    
+    # Query base
+    query = MediaPhysical.where.not(release_year: nil)
+    
+    # Aplica filtro se houver busca
+    if @search_term.present?
+      # Busca por ano exato ou parcial
+      query = query.where('CAST(release_year AS TEXT) LIKE ?', "%#{@search_term}%")
+    end
+    
+    # Pega todos os anos com contagem
+    all_years_hash = query.group(:release_year)
+                          .count
+                          .sort_by { |year, _| year }
+                          .reverse
+
+    # Converte hash para array de objetos paginável
+    @years = Kaminari.paginate_array(all_years_hash).page(params[:page]).per(10)
+
+    # Calcula o máximo para a barra de progresso (de todos os anos, não só da página)
+    @max_count = all_years_hash.map(&:last).max || 1
   end
 
   def by_year
@@ -74,9 +105,15 @@ class DashboardController < ApplicationController
     @countries = Country.joins(:media_physicals)
                         .select('countries.*, COUNT(media_physicals.id) as media_count')
                         .group('countries.id')
-                        .order('countries.name ASC')
-                        .page(params[:page])
-                        .per(10)
+    
+    if params[:search].present?
+      @countries = @countries.where('countries.name ILIKE ?', "%#{params[:search]}%")
+      @search_term = params[:search]
+    end
+    
+    @countries = @countries.order('countries.name ASC')
+                    .page(params[:page])
+                    .per(10)
   end
 
   def by_country

@@ -1,17 +1,45 @@
-
 <div class="row mb-4">
-  <div class="col">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <h3 class="display-5">
-          <i class="bi bi-globe2 text-primary"></i> Todos os Países
-        </h3>
-        <p class="lead text-muted">
-          Distribuição da coleção por país
-        </p>
+  <div class="col-12">
+    
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h3 class="display-5 mb-0">
+        <i class="bi bi-globe2 text-primary"></i> Todos os Países
+      </h3>
+      
+      <div class="d-flex gap-2 align-items-center">
+        <!-- Formulário de busca compacto inline -->
+        <%= form_with url: all_countries_path, method: :get, class: "d-flex gap-2" do |f| %>
+          <%= f.text_field :search, 
+              value: params[:search],
+              class: "form-control",
+              placeholder: "Buscar país...",
+              style: "width: 250px;",
+              autofocus: params[:search].present? %>
+          <%= f.submit "Buscar", class: "btn btn-primary" %>
+        <% end %>
+        
+        <%= link_to dashboard_path, class: "btn btn-secondary" do %>
+          <i class="bi bi-arrow-left"></i> Voltar
+        <% end %>
       </div>
-      <%= link_to dashboard_path, class: "btn btn-secondary" do %>
-        <i class="bi bi-arrow-left me-1"></i>Voltar
+    </div>
+    
+    
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="lead text-muted mb-0">
+        Distribuição da coleção por país
+      </p>
+      
+      <% if @search_term.present? %>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge bg-info fs-6">
+            <i class="bi bi-funnel-fill me-1"></i>
+            Filtro: "<%= @search_term %>"
+          </span>
+          <%= link_to all_countries_path, class: "btn btn-sm btn-outline-secondary" do %>
+            <i class="bi bi-x-circle me-1"></i>Limpar
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
@@ -26,8 +54,8 @@
             <tr>
               <th width="60">#</th>
               <th>País</th>
-              <th width="150" class="text-center">Quantidade</th>
-              <th width="150" class="text-center">Ações</th>
+              <th class="text-center">Quantidade</th>
+              <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +70,7 @@
                   <strong><%= country.name %></strong>
                 </td>
                 <td class="text-center">
-                  <span class="badge bg-secondary rounded-pill fs-6">
+                  <span class="badge bg-success rounded-pill fs-6">
                     <%= country.media_count %> <%= country.media_count == 1 ? 'mídia' : 'mídias' %>
                   </span>
                 </td>
